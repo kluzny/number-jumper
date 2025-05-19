@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Frog from "./Frog";
+import Tile from "./Tile";
 
 const keyMap = {
   MOVE_JUMP: ["ArrowUp", "w", " "],
@@ -9,9 +10,9 @@ const keyMap = {
 };
 
 // The World component is the main game area where the Frog component is rendered.
-// it is a 3x5 grid with 0,0 at the top left and 2,4 at the bottom right
-const DIM_WORLD_X = 5;
-const DIM_WORLD_Y = 3;
+// it is a NxM grid with 0,0 at the top left and N-1,M-1 at the bottom right
+const DIM_WORLD_X = 10;
+const DIM_WORLD_Y = 4;
 const MAX_X = DIM_WORLD_X - 1;
 const MAX_Y = DIM_WORLD_Y - 1;
 
@@ -96,11 +97,32 @@ function World() {
     };
   }, [handleKey]);
 
+  const rows = [];
+  for (let y = 0; y < DIM_WORLD_Y; y++) {
+    let tiles = [];
+
+    for (let x = 0; x < DIM_WORLD_X; x++) {
+      if (x === position[0] && y == position[1]) {
+        tiles.push(
+          <Tile key={`${x}-${y}`}>
+            <Frog />
+          </Tile>
+        );
+      } else {
+        tiles.push(<Tile key={`${x}-${y}`} />);
+      }
+    }
+
+    rows.push(
+      <section key={`section-${y}`} className="flex">
+        {tiles}
+      </section>
+    );
+  }
+
   return (
-    <div className="border-2 border-blue-500 rounded-lg m-4 h-120 bg-purple-200">
-      <Frog />
-      <p>p0: {position[0]}</p>
-      <p>p1: {position[1]}</p>
+    <div className="border-2 border-blue-500 rounded-lg m-4 bg-purple-200 w-fit mx-auto">
+      {rows}
     </div>
   );
 }
