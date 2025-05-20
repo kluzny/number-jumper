@@ -23,6 +23,7 @@ const DOWN: [number, number] = [0, 1];
 
 function World() {
   const [position, setposition] = useState([0, 3]);
+  const [facing, setFacing] = useState(true); // true = right, false = left
 
   const handleKey = useCallback(
     (event: KeyboardEvent) => {
@@ -70,11 +71,13 @@ function World() {
           event?.preventDefault();
           console.log("Left");
           updatePosition(LEFT);
+          setFacing(false);
         },
         MOVE_RIGHT: (event?: KeyboardEvent) => {
           event?.preventDefault();
           console.log("Right");
           updatePosition(RIGHT);
+          setFacing(true);
         },
       };
 
@@ -105,7 +108,7 @@ function World() {
       if (x === position[0] && y == position[1]) {
         tiles.push(
           <Tile key={`${x}-${y}`}>
-            <Frog />
+            <Frog facing={facing} />
           </Tile>
         );
       } else {

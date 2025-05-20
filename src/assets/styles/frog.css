@@ -1,0 +1,32 @@
+.frog {
+  --scale-factor: 2;
+  --translate-factor: 33.333%;
+}
+
+.frog.idle {
+  background-image: url('../sprites/frog_idle.png');
+  /* size of one frame */
+  width: 32px;
+  height: 32px;
+  /* size of the whole sheet */
+  background-size: 64px 32px;
+  animation: idleAnimation 0.5s steps(2, jump-none) infinite;
+  transform: scale(var(--scale-factor), var(--scale-factor))
+             translate(var(--translate-factor), var(--translate-factor));
+}
+
+.frog.flipped {
+  transform: scale(calc(var(--scale-factor) * -1), var(--scale-factor))
+             translate(calc(var(--translate-factor) * -1), var(--translate-factor));
+}
+
+@keyframes idleAnimation {
+  from {
+    /* first frame */
+    background-position: 0px 0px;
+  }
+  to {
+    /* coordinates of the desired frame (negated) */
+    background-position: -32px 0px;
+  }
+}
