@@ -27,6 +27,7 @@ function World() {
   const [isJumping, setIsJumping] = useState(false);
   const [isFalling, setIsFalling] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleKey = useCallback(
     (event: KeyboardEvent) => {
@@ -75,24 +76,32 @@ function World() {
           newPosition[1] = MAX_Y;
           wantsToFall = false;
         }
-
         if (wantsToJump) {
+          setIsAnimating(true);
+
           setIsJumping(true);
           setTimeout(() => {
             setPosition([...newPosition]);
             setIsJumping(false);
+            setIsAnimating(false);
           }, 1000);
         } else if (wantsToFall) {
+          setIsAnimating(true);
+
           setIsFalling(true);
           setTimeout(() => {
             setPosition([...newPosition]);
             setIsFalling(false);
+            setIsAnimating(false);
           }, 1000);
         } else if (wantsToMove) {
+          setIsAnimating(true);
+
           setIsMoving(true);
           setTimeout(() => {
             setPosition([...newPosition]);
             setIsMoving(false);
+            setIsAnimating(false);
           }, 1000);
         }
       }
@@ -125,13 +134,13 @@ function World() {
       for (const [action, keys] of Object.entries(keyMap)) {
         if (keys.includes(event.key)) {
           const handler = handlers[action as keyof typeof handlers];
-          if (handler) {
+          if (handler && !isAnimating) {
             handler(event);
           }
         }
       }
     },
-    [position]
+    [position, isAnimating]
   );
 
   useEffect(() => {
