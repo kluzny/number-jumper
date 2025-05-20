@@ -1,4 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { useWithSound } from "../hooks/useWithSound";
+
+import boing from "../assets/sounds/boing.wav";
+import waterdrop from "../assets/sounds/waterdrop.wav";
+
 import Frog from "./Frog";
 import Tile from "./Tile";
 
@@ -28,6 +33,9 @@ function World() {
   const [isFalling, setIsFalling] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const { playSound: playBoing } = useWithSound(boing, 0.25);
+  const { playSound: playWaterdrop } = useWithSound(waterdrop, 0.5);
 
   const handleKey = useCallback(
     (event: KeyboardEvent) => {
@@ -80,6 +88,8 @@ function World() {
           setIsAnimating(true);
 
           setIsJumping(true);
+          playBoing();
+
           setTimeout(() => {
             setPosition([...newPosition]);
             setIsJumping(false);
@@ -89,6 +99,8 @@ function World() {
           setIsAnimating(true);
 
           setIsFalling(true);
+          playBoing();
+
           setTimeout(() => {
             setPosition([...newPosition]);
             setIsFalling(false);
@@ -98,6 +110,7 @@ function World() {
           setIsAnimating(true);
 
           setIsMoving(true);
+          playWaterdrop();
           setTimeout(() => {
             setPosition([...newPosition]);
             setIsMoving(false);
