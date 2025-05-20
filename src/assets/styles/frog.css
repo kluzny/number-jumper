@@ -1,6 +1,49 @@
+.frog-wrapper {
+  position: relative;
+}
+
 .frog {
+  position: absolute;
   --scale-factor: 2;
   --translate-factor: 33.333%;
+}
+
+.frog.leaping {
+  width: 32px;
+  height: 32px;
+  background-image: url('../sprites/frog_jump.png');
+  /* size of one frame */
+  width: 32px;
+  height: 32px;
+  /* size of the whole sheet */
+  background-size: 128px 32px;
+  transform: scale(var(--scale-factor), var(--scale-factor))
+             translate(var(--translate-factor), var(--translate-factor));
+}
+
+.frog.leaping.jump {
+  animation: leapAnimation 1s steps(4, jump-start) infinite,
+             upAnimation 1s ease-in-out infinite;
+}
+
+.frog.leaping.fall {
+  animation: leapAnimation 1s steps(4, jump-start) infinite,
+             downAnimation 1s ease-in-out infinite;
+}
+
+.frog.leaping.right {
+  animation: leapAnimation 1s steps(4, jump-start) infinite,
+             rtlAnimation 1s ease-in-out infinite;
+}
+
+.frog.leaping.left {
+  animation: leapAnimation 1s steps(4, jump-start) infinite,
+             ltrAnimation 1s ease-in-out infinite;
+}
+
+.frog.leaping.flipped {
+  transform: scale(calc(var(--scale-factor) * -1), var(--scale-factor))
+             translate(calc(var(--translate-factor) * -1), var(--translate-factor));
 }
 
 .frog.idle {
@@ -15,7 +58,7 @@
              translate(var(--translate-factor), var(--translate-factor));
 }
 
-.frog.flipped {
+.frog.idle.flipped {
   transform: scale(calc(var(--scale-factor) * -1), var(--scale-factor))
              translate(calc(var(--translate-factor) * -1), var(--translate-factor));
 }
@@ -24,9 +67,57 @@
   from {
     /* first frame */
     background-position: 0px 0px;
+    translateX: 0px;
   }
   to {
     /* coordinates of the desired frame (negated) */
     background-position: -32px 0px;
+  }
+}
+
+@keyframes leapAnimation {
+  from {
+    /* first frame */
+    background-position: 0px 0px;
+  }
+  to {
+    /* coordinates of the desired frame (negated) */
+    background-position: -128px 0px;
+  }
+}
+
+@keyframes upAnimation {
+  from {
+    top: 0px;
+  }
+  to {
+    top: -96px;
+  }
+}
+
+@keyframes downAnimation {
+  from {
+    top: 0px;
+  }
+  to {
+    top: 96px;
+  }
+}
+
+@keyframes ltrAnimation {
+  from {
+    left: 0px;
+  }
+  to {
+    left: -96px;
+  }
+}
+
+@keyframes rtlAnimation {
+  from {
+    left: 0px;
+  }
+  to {
+    left: 96px;
   }
 }
